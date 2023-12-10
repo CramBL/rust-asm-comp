@@ -15,9 +15,14 @@ When implementing a function that operates on a `Vec<T>` many users default to s
 The explanation focuses on the assembly generated for the slice case, the difference from the borrowed vector is outlined in the [conclusion](#conclusion).
 
 The assembly handles 3 different cases depending on the number of elements in the slice, call this **N**.
-1. **N == 0** -> return 0
-2. **N < 8** -> Sum elements one after the other and return the sum
-3. **N >= 8** -> Sum 8 elements at a time using SIMD instructions until all elements are summed or until a remainder of elements less than 8 in which case sum the remainder one by one and return the sum.
+1. **N == 0**
+>return 0.
+2. **N < 8**
+>Sum elements one after the other.
+3. **N >= 8**
+>Sum 8 elements at a time using SIMD instructions until all elements are summed.
+
+(4) If **N >= 8** but **N** is not 8-aligned the resulting scenario is equivelant to case 3 followed by case 2 on the remainder.
 
 ### 1. **N == 0**
 
@@ -32,6 +37,7 @@ The assembly handles 3 different cases depending on the number of elements in th
 ```
 
 ### 2. **N < 8**
+
 After the test for the case of `N==0` is not true, test if `N==8`:
 ```asm
 # l. 11-15
@@ -55,6 +61,7 @@ Sum the elements one by one and then return. Here `r8` is the loop counter (inde
 ```
 
 ### 3. **N >= 8**
+
 Test if the length is 0, then if it's larger or equal to 8, then we jump to `.LBB2_4`
 ```asm
 # l. 9-12
