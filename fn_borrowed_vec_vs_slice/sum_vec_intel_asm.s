@@ -1,11 +1,11 @@
-# rustc 1.74.0
-# Generated with:
-# cargo asm
-#           rust_lib_asm::borrowed_vec::sum_vec
-#           --rust
-#           --build-type release
-#           --target x86_64-pc-windows-gnu
-#           --asm-style intel
+; rustc 1.74.0
+; Generated with:
+; cargo asm
+;           rust_lib_asm::borrowed_vec::sum_vec
+;           --rust
+;           --build-type release
+;           --target x86_64-pc-windows-gnu
+;           --asm-style intel
  mov     rdx, qword, ptr, [rcx, +, 16]
  test    rdx, rdx
  je      .LBB0_1

@@ -1,11 +1,3 @@
-# rustc 1.74.0
-# Generated with:
-# cargo asm
-#           rust_lib_asm::borrowed_slice::sum_slice
-#           --rust
-#           --build-type release
-#           --target x86_64-pc-windows-gnu
-#           --asm-style intel
  test    rdx, rdx
  je      .LBB2_1
  cmp     rdx, 8

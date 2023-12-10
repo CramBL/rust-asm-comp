@@ -1,4 +1,5 @@
 pub mod borrowed_vec {
+    #[no_mangle] // Comment out if using `cargo asm`
     pub fn sum_vec(nums: &Vec<u32>) -> u32 {
         nums.iter().sum()
     }
@@ -13,6 +14,7 @@ pub mod borrowed_vec {
 }
 
 pub mod borrowed_slice {
+    #[no_mangle] // Comment out if using `cargo asm`
     pub fn sum_slice(nums: &[u32]) -> u32 {
         nums.iter().sum()
     }
