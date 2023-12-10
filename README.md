@@ -16,6 +16,7 @@
 2. Copy assembly output of target function
 3. Repeat 1-2 for `<target function B>`
 4. Generate diff with `delta asmA asmB -w <column_width> --side-by-side | aha --black > <my_diff>.html`
+5. Feed the assembly into `llvm-mca` and examine output
 
 > Unfortunately it is not feasible to pipe the output of `cargo asm` into `delta` directly as the output includes debug strings and the assembly of any other function in the crate (with mangled names)
 
