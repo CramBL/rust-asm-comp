@@ -1,9 +1,9 @@
-; rustc 1.74.0
-; Generated with:
-; cargo rustc
-;			--release
-;			-- --target x86_64-pc-windows-gnu
-;			   --emit asm
+# rustc 1.74.0
+# Generated with:
+# cargo rustc
+#			--release
+#			-- --target x86_64-pc-windows-gnu
+#			   --emit asm
 sum_slice:
 	testq	%rdx, %rdx
 	je	.LBB2_1
