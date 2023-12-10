@@ -1,0 +1,9 @@
+Iterations:        100
+Instructions:      3400
+Total Cycles:      2503
+Total uOps:        3300
+
+Dispatch Width:    6
+uOps Per Cycle:    1.32
+IPC:               1.36
+Block RThroughput: 5.5

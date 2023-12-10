@@ -3,6 +3,8 @@
 ## Tools used
 >Assembly generated with `cargo-asm` https://github.com/gnzlbg/cargo-asm
 
+>Machine code analysis done with `llvm-mca` https://llvm.org/docs/CommandGuide/llvm-mca.html
+
 >diffs generated with `delta` https://github.com/dandavison/delta
 
 >diff output converted to html with `aha` https://github.com/theZiz/aha

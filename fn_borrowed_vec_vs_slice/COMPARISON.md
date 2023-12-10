@@ -4,12 +4,12 @@ When implementing a function that operates on a `Vec<T>` many users default to s
 
 ## Compairing
 
-![function diffs](fn-diff.png)
->[Click here for the raw html from the image above](fn-diff.html)
+![function diffs](./diffs/fn-diff.png)
+>[Click here for the raw html from the image above](./diffs/fn-diff.html)
 
 ## Assembly
-![Assembly diff](asm-diff.png)
->[Click here for the raw html from the image above](asm-diff.html)
+![Assembly diff](./diffs/asm-diff.png)
+>[Click here for the raw html from the image above](./diffs/asm-diff.html)
 
 ## Assembly Explanation
 The explanation focuses on the assembly generated for the slice case, the difference from the borrowed vector is outlined in the [conclusion](#conclusion).
@@ -111,6 +111,29 @@ Once the loop has run until `rax` is equal to the 8-aligned length (N), we perfo
 ```
 If N is not 8-aligned we add the remainder element-by-element, this state is equivelant to case 2 except that `eax` contains the sum of the SIMD additions, refer to [case 2](#2-n--8) for the explanation of one-by-one summation.
 
+## LLVM Machine Code Analysis
+The analysis is performed by first generating AT&T style assembly: feeding each set of instructions into `llvm-mca`
+```shell
+cargo rustc --release -- --target x86_64-pc-windows-gnu --emit asm
+```
+Then saving the relevant assembly from the output and feeding it into `llvm-mca`
+```shell
+cat ./asm/sum_vec_at_asm.s | llvm-mca --resource-pressure=0 --instruction-info=0 --mtriple=x86_64-w64-windows-gnu -mcpu=alderlake > ./mca/vec_mca_summary.txt
+```
+The diff is seen below.
+
+<img src="./diffs/mca-summary-diff.png" alt="LLVM-MCA output" width="800">
+
+Dividing instructions and cycles with the iterations gets us:
+
+|               | `&Vec<u32>`   | `&[u32]`      |
+| :-----------: | :-----------: | :-----------: |
+| Instructions  | 35            | 34            |
+| Total Cycles  | 25.04         | 25.03         |
+
+It shows that there's a difference, but a tiny one. This is expected when the only difference is the type of the argument in a function signature.
+Looking further into the analysis that llvm-mca gives us, could lead to more insight about the impact but this is beyond the scope of this document.
+
 ## Conclusion
 Passing a borrowed vector `&Vec<T>` instead of a borrowed slice `&[T]` introduces an unneccesary indirection and narrows the usability of the function (cannot be used on an array). In trivial cases this indirection will be spotted by the compiler and optimized away, but the usability of the function remains limited [as described in the Clippy lint](https://rust-lang.github.io/rust-clippy/master/index.html#/ptr_arg). If the indirection is not removed by the compiler, the cost is extra instructions that might be costly if it means another roundtrip to fetch data, the extra instructions are visible on line 9, left side of the side-by-side view:
 ```asm
@@ -126,3 +149,4 @@ mov     rcx, qword, ptr, [rcx]
 ```
 The rest of the operations are identical. The slice/vector is summed with SIMD instructions aligned to 8 elements in this case, any leftover elements that don't align are summed one-by-one in a loop l. 43-47 on the left and l. 39-45 on the right of the side-by-side view.
 
+Looking at the summary provided by `llvm-mca` reveals a difference between the two implementations, but a tiny one. Using the function in a larger context could reveal larger effects as it might cause misses in optimization opportunities for the `&Vec<T>` case.
