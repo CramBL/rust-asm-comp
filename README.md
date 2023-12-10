@@ -19,3 +19,11 @@
 
 ## Comparisons
 [Function signature argument types: `&Vec<u32>` vs. `&[u32]`](/fn_borrowed_vec_vs_slice/COMPARISON.md)
+
+## Ideas for investigation
+* for-range vs. iter-loops
+* for-range vs. raw-loops
+* zero-initialized storage vs. maybe-uninit storage
+* Function signature argument types: Box<str> vs. String
+* Enum variant layout: Box<str> vs. String / Box<[u8]> vs. Vec<u8>
+
