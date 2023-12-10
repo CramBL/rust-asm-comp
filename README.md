@@ -5,7 +5,7 @@
 
 >diffs generated with `delta` https://github.com/dandavison/delta
 
->diff output converted to html with `ansi2html` https://github.com/pycontribs/ansi2html
+>diff output converted to html with `aha` https://github.com/theZiz/aha
 
 ## Workflow
 
@@ -13,7 +13,7 @@
 1. Generate assembly with `cargo asm <target function A>`
 2. Copy assembly output of target function
 3. Repeat 1-2 for `<target function B>`
-4. Generate diff with `delta asmA asmB -w <column_width> | ansi2html > <my_diff>.html`
+4. Generate diff with `delta asmA asmB -w <column_width> --side-by-side | aha --black > <my_diff>.html`
 
 > Unfortunately it is not feasible to pipe the output of `cargo asm` into `delta` directly as the output includes debug strings and the assembly of any other function in the crate (with mangled names)
 
