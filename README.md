@@ -17,3 +17,5 @@
 
 > Unfortunately it is not feasible to pipe the output of `cargo asm` into `delta` directly as the output includes debug strings and the assembly of any other function in the crate (with mangled names)
 
+## Comparisons
+[Function signature argument types: `&Vec<u32>` vs. `&[u32]`](/fn_borrowed_vec_vs_slice/COMPARISON.md)
