@@ -2,7 +2,7 @@
 ## Introduction
 When implementing a function that operates on a `Vec<T>` many users default to specifying `&Vec<T>` as the type of the argument (or `&String` for owned strings), which makes sense at first and works as intended. This is a bad idea for several reasons which will be outlined in this document. By default, the compiler does not issue a warning while [Clippy](https://github.com/rust-lang/rust-clippy/) does with the `#[warn(clippy::ptr_arg)]` lint and [links to this explanation](https://rust-lang.github.io/rust-clippy/master/index.html#/ptr_arg), there's more to it than this explanations though.
 
-## Compairing
+## Comparing
 
 ![function diffs](./diffs/fn-diff.png)
 >[Click here for the raw html from the image above](./diffs/fn-diff.html)
